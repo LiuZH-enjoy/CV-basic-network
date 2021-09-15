@@ -7,7 +7,7 @@ import torchvision.transforms as transforms
 
 
 def main():
-    # 图像变换
+    # 图像变换1
     transform = transforms.Compose(
         [transforms.ToTensor(),
          transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
