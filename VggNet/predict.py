@@ -43,6 +43,7 @@ def main():
     model.eval()
     with torch.no_grad():
         # predict class
+        # squeeze 与 unsqueeze使用参考：https://zhuanlan.zhihu.com/p/86763381
         output = torch.squeeze(model(img.to(device))).cpu()
         predict = torch.softmax(output, dim=0)
         predict_cla = torch.argmax(predict).numpy()
