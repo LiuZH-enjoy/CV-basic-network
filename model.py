@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
-# 网络
+# 网络层
 class LeNet(nn.Module):
     def __init__(self):
         super(LeNet, self).__init__()
