@@ -1,2 +1,3 @@
-# LeNet
-CV basic network : LeNet
+# CV basic network
+## LeNet
+## AlexNet
