@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch
+from torchsummary import summary
 
 # 网络层
 # 网络都是继承nn.Module来新写一个类
@@ -60,3 +61,6 @@ class AlexNet(nn.Module):
             elif isinstance(m, nn.Linear):
                 nn.init.normal_(m.weight, 0, 0.01)
                 nn.init.constant_(m.bias, 0)
+
+# net = AlexNet(num_classes=5, init_weights=True)
+# print(summary(net, (3, 224, 224)))
