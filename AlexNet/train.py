@@ -4,6 +4,7 @@ import json
 import torch
 import torch.nn as nn
 from torchvision import transforms, datasets, utils
+from torch.utils.tensorboard import SummaryWriter
 import matplotlib.pyplot as plt
 import numpy as np
 import torch.optim as optim
@@ -15,6 +16,10 @@ def main():
     # 选择device，如果可以gpu则选择gpu，否则就用cpu
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("using {} device.".format(device))
+    print('Start Tensorboard with "tensorboard --logdir=runs", view at http://localhost:6006/')
+    # 实例化SummaryWriter对象
+    tb_writer = SummaryWriter(log_dir="./AlexNet/runs/flower_experiment")
+
     # 定义一个图形增强的dict，包含train和val两个变换类型，具体怎么进行数据增强查看transforms的API，这是最好的办法
     # RandomResizedCrop : 选定图片某一随机位置，然后按照size进行裁剪
     # RandomHorizontalFlip : 图形以一定概率进行随机水平翻转
@@ -63,10 +68,13 @@ def main():
 
     # 实例化网络
     net = AlexNet(num_classes=5, init_weights=True)
+    #print(net.features[0])
     # 牢记要转到device
     net.to(device)
     loss_function = nn.CrossEntropyLoss()
     optimizer = optim.Adam(net.parameters(), lr=0.0002)
+    init_img = torch.zeros((1, 3, 224, 224), device=device)
+    tb_writer.add_graph(net, init_img)
 
     epochs=10
     # 模型保存路径
@@ -116,6 +124,14 @@ def main():
         print('[epoch %d] train_loss: %.3f validate_loss: %.3f val_accuracy: %.3f' % 
             (epoch+1, training_loss/train_steps, validate_loss/validate_steps, val_accuracy))
         
+        tags = ["Loss/train_loss", "Loss/val_loss", "accuracy"]
+        tb_writer.add_scalar(tags[0], training_loss/train_steps, epoch)
+        tb_writer.add_scalar(tags[1], validate_loss/validate_steps, epoch)
+        tb_writer.add_scalar(tags[2], val_accuracy, epoch)
+        tb_writer.add_histogram(tag="features/conv1",
+                                values=net.features[0].weight,
+                                global_step=epoch)
+
         # 如果该epoch训练出来的模型在验证集上的准确率比最高的acc要高，怎保存该准确率并且保存该模型
         if val_accuracy > best_acc:
             best_acc = val_accuracy
