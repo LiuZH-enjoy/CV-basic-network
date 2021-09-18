@@ -73,6 +73,7 @@ def main():
     net.to(device)
     loss_function = nn.CrossEntropyLoss()
     optimizer = optim.Adam(net.parameters(), lr=0.0002)
+    # 将模型写入tensorboard
     init_img = torch.zeros((1, 3, 224, 224), device=device)
     tb_writer.add_graph(net, init_img)
 
@@ -124,10 +125,12 @@ def main():
         print('[epoch %d] train_loss: %.3f validate_loss: %.3f val_accuracy: %.3f' % 
             (epoch+1, training_loss/train_steps, validate_loss/validate_steps, val_accuracy))
         
+        # add loss, acc into tensorboard
         tags = ["Loss/train_loss", "Loss/val_loss", "accuracy"]
         tb_writer.add_scalar(tags[0], training_loss/train_steps, epoch)
         tb_writer.add_scalar(tags[1], validate_loss/validate_steps, epoch)
         tb_writer.add_scalar(tags[2], val_accuracy, epoch)
+        # add conv1 weights into tensorboard
         tb_writer.add_histogram(tag="features/conv1",
                                 values=net.features[0].weight,
                                 global_step=epoch)
