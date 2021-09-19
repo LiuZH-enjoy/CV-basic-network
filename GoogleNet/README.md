@@ -1,10 +1,10 @@
 # 运行步骤
 
-# 1. 数据集拆分
+## 1. 数据集拆分
 
 首先要下载数据集，分为两个版本
 
-## 版本一：Windows下
+### 版本一：Windows下
 - （1）先在此目录下创建data_set文件夹，然后在data_set文件夹下创建新文件夹"flower_data"
 
 - （2）点击链接下载花分类数据集: https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz
@@ -24,7 +24,7 @@
 
   
 
-## 版本二：用Colab（Linux下）
+### 版本二：用Colab（Linux下）
 
 - （1）先在此目录下创建data_set文件夹，然后在data_set文件夹下创建新文件夹"flower_data"。（colab里可以用linux命令创建，也可以直接像Windows那样鼠标操作新建文件夹。
 - （2）此时使用Linux命令下载数据集
