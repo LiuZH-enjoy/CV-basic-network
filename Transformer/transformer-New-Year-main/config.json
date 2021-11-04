@@ -1,0 +1,5 @@
+{
+  "batch_size": 4,
+  "lr": 1e-4,
+  "epochs": 100
+}
